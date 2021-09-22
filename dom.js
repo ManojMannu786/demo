@@ -20,5 +20,14 @@ console.log(document.links);
 var header=document.getElementById('main-header');
 header.style.borderBottom='solid 3px #000';
 var items = items = document.getElementsByClassName('list-group-item');
+items[1].textcontent='hello';
 item[1].style.fontweight= 'bold';
 item[1].style.textColor='green';
+//gives error
+//items.style.background = '#f4f4f4';
+
+for(let i=0; i<items.length; i++){
+    items[1].style.fontweight ='bold';
+}
+items[2].style.background='green';
+

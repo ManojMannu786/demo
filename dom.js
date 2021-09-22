@@ -31,3 +31,16 @@ for(let i=0; i<items.length; i++){
 }
 items[2].style.background='green';
 
+//getElementByTagName
+var li = document.getElementsByTagName('li');
+li[1].textcontent='hello';
+li[1].style.fontweight= 'bold';
+li[1].style.textColor='green';
+//gives error
+//items.style.background = '#f4f4f4';
+
+for(let i=0; i<li.length; i++){
+    li[1].style.fontweight ='bold';
+}
+li[2].style.background='green';
+

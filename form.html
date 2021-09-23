@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body style="background: url('C:\Users\MANOJ\Desktop\minor project\overpopulated classroom') no-repeat;
+    background-size: cover;">
+        <div class="box" style="border: 1px; border-color: black; align-items: center;">
+            <h5>Book a call</h5>
+            <form action="#" onsubmit="submission(event)">
+                <label for="name">Name</label><br>
+                <input type="text" id="name" name="name"><br><br>
+                <label for="email">Email</label><br>
+                <input type="email" id="email" name="email"><br><br>
+                <label for="phone">Phone</label><br>
+                <input type="number" id="phone" maxlength="10" name="phone"><br><br>
+                <label for="time">time for call</label><br>
+                <input type="date" name="date">
+                <input type="time" name="time"><br><br>
+                <input type="submit" name="Get a call">
+
+            </form>
+        </div>
+        <script>
+            /*
+            function submission(event){
+                event.preventDefault();
+                console.log(event.target.name.value);
+                console.log(event.target.email.value);
+                console.log(event.target.phone.value);
+                console.log(event.target.date.value);
+                console.log(event.target.time.value);
+            }
+            */
+           function submission(event){
+               event.preventDefault();
+               const name =event.target.name.value;
+               const email = event.target.email.value;
+               const phoneNo = event.target.phone.value;
+
+               sessionStorage.setItem('name', name);
+               sessionStorage.setItem('email', email);
+               sessionStorage.setItem('phone', phoneNo);
+           }
+        </script>
+    </body>
+</html>

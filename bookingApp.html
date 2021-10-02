@@ -7,7 +7,7 @@
     background-size: cover;">
         <div class="box" style="border: 1px; border-color: black; align-items: center;">
             <h5>Book a call</h5>
-            <form action="#" onsubmit="saveToLocal(event)">
+            <form action="#" onsubmit="saveToCloud(event)">
                 <label for="name">Name</label><br>
                 <input type="text" id="name" name="name" required><br><br>
                 <label for="email">Email</label><br>
@@ -22,6 +22,7 @@
             </form>
             <ul id='listOfUser'></ul>
         </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.22.0/axios.min.js"></script>
         <script>
             /*
             function submission(event){
@@ -33,7 +34,24 @@
                 console.log(event.target.time.value);
             }
             */
-           
+            function saveToCloud(e){
+               e.preventDefault();
+               const name = e.target.name.value;
+               const email = e.target.email.value;
+               const phone = e.target.phone.value;
+
+               const userDetail = {
+                 'name' : name,
+                 'email' : email,
+                 'phone' : phone
+               };
+
+               axios.post('https://crudcrud.com/api/750f998c82384b6a83ec916849f3171c/appointmentData', userDetail)
+               .then((respnse)=>showNewUser(respnse.data))
+               .catch((err)=>document.body.innerHTML = document.body.innerHTML + "<h4 style= 'color:red'>something went wrong</h4>")
+        
+           }
+
            function submission(event){
                event.preventDefault();
                const name =event.target.name.value;
@@ -65,15 +83,25 @@
            */
            // show user on refreshing the page
            addEventListener("DOMContentLoaded", ()=>{
-            const localStorageObj = localStorage;
-            const localStorageKeys = Object.keys(localStorageObj);
+               axios.get('https://crudcrud.com/api/750f998c82384b6a83ec916849f3171c/appointmentData')
+               .then((response)=>{
+                   for(let i=0; i<response.data.length; i++){
+                    showNewUser(response.data[i])
+                   }
+               })
+               .catch((err)=>{
+                document.body.innerHTML = document.body.innerHTML + "<h4 style= 'color:red'>something went wrong</h4>"
+               })
+               
+            // const localStorageObj = localStorage;
+            // const localStorageKeys = Object.keys(localStorageObj);
             
-            for(let i =0; i<localStorageKeys.length; i++){
-                const key = localStorageKeys[i];
-                const userDetailString = localStorageObj[key];
-                const userDetailObj = JSON.parse(userDetailString);
-                showNewUser(userDetailObj);
-            }
+            // for(let i =0; i<localStorageKeys.length; i++){
+            //     const key = localStorageKeys[i];
+            //     const userDetailString = localStorageObj[key];
+            //     const userDetailObj = JSON.parse(userDetailString);
+            //     showNewUser(userDetailObj);
+            // }
            })
 
 
@@ -122,37 +150,45 @@
                   removeUser(user.email);
               }
               const parentNode = document.getElementById('listOfUser');
-              const childNode = `<li id=${user.email}> ${user.name} - ${user.email}
-                                <button onclick=editUser('${user.name}','${user.email}','${user.phone}')>Edit User</button>
-                                <button onclick=deleteUser('${user.email}')>Delete User</button>
+            //   const childNode = `<li id=${user.email}> ${user.name} - ${user.email}
+            //                     <button onclick=editUser('${user.name}','${user.email}','${user.phone}')>Edit User</button>
+            //                     <button onclick=deleteUser('${user.email}')>Delete User</button>
+            //                     </li>`;
+            const childNode = `<li id=${user._id}> ${user.name} - ${user.email}
+                                <button onclick=editUser('${user._id}','${user.name}','${user.email}','${user.phone}')>Edit User</button>
+                                <button onclick=deleteUser('${user._id}','${user.name}')>Delete User</button>
                                 </li>`;
-
               parentNode.innerHTML = parentNode.innerHTML + childNode;
           }
 
           //to remove user from local storage
-          function deleteUser(email){
-              if(confirm(`Are You sure want to Delete User ${email}`)){
-                  localStorage.removeItem(email);
-                  removeUser(email);
+          function deleteUser(id,name){
+              if(confirm(`Are You sure want to Delete User ${name}`)){
+                //   localStorage.removeItem(email);
+                axios.delete(`https://crudcrud.com/api/750f998c82384b6a83ec916849f3171c/appointmentData/${id}`)
+                .then((responce)=>removeUser(id))
+                .catch((err)=>{
+                    document.body.innerHTML = document.body.innerHTML + "<h4 style= 'color:red'>something went wrong delete User</h4>"
+                });
+                  
               }
           }
 
           //to remove user detail from screen
-          function removeUser(email){
+          function removeUser(id){
               const parentNode = document.getElementById('listOfUser');
-              const childNode = document.getElementById(email);
+              const childNode = document.getElementById(id);
               if(childNode){
                   parentNode.removeChild(childNode);
               }
           }
 
           // to edit user detail
-          function editUser(Username, email, phone){
+          function editUser(id,Username, email, phone){
               document.getElementById('name').value= Username;
               document.getElementById('email').value= email;
               document.getElementById('phone').value = phone;
-              deleteUser(email);
+              deleteUser(id,Username);
           }
 
         </script>

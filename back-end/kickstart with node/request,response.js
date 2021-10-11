@@ -1,22 +1,24 @@
 const http = require('http');
-http.c
+const fs = require('fs');
 const server = http.createServer((req,res)=>{
-    if(req.url == '/home'){
-        res.write('<html><head></head><body><h1> Welcome home </h1></body></html>');
-        res.end();
+    if(req.url == '/'){
+        res.write('<html>')
+        res.write('<head><title> default page </title></head>')
+        res.write('<body><form action ="/message" method = "POST"><input type="text" name="message"><button type="submit"> Send</button></body>')
+        res.write('</html>')
+        return res.end();
     }
-    else if(req.url == '/about'){
-        res.write('<html><head></head><body><h1> Welcome to About Us page </h1></body></html>');
-        res.end();
+    if(req.url == '/message' && req.method == 'POST'){
+        fs.writeFileSync('message.txt', 'Dummy Text');
+        res.statusCode= 302;
+        res.setHeader('Location', '/');
+        return res.end();
     }
-    else if(req.url == '/node'){
-        res.write('<html><head></head><body><h1> Welcome to my Node Js project </h1></body></html>');
+    res.write('<html>')
+        res.write('<head><title> message page </title></head>')
+        res.write('<body><h1>This is message page</h1></body>')
+        res.write('</html>')
         res.end();
-    }
-    else {
-        res.write('<html><head></head><body><h1> Welcome to my Node Js project default page </h1></body></html>');
-        res.end();
-    }
 })
 
 server.listen(4000);

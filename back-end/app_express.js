@@ -6,19 +6,23 @@ const express = require('express');
 
 const app = express();
 
-app.use(bodyParser.urlencoded({
-    extended: false
-}))
 
 const adminRoutes = require('./routes/admin.js');
 const shopRoutes = require('./routes/shop.js');
 
-app.use(adminRoutes);
-app.use(shopRoutes);
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
 
-//handeling page not found request
+//filter all '/admin' request to adminRoutes
+app.use('/admin', adminRoutes);
+//filter all '/shop' request to adminRoutes
+app.use('/shop', shopRoutes);
+
+
+
 app.use((req,res,next)=>{
-    res.status(404).send('<h1>:-(</h1><h3>"Page Not Found" : Manoj</h3>')  //res.status(404) sends respnse code of 404
+    res.status(404).send('<h1>:-(</h1><h3>"Page Not Found" : Manoj</h3>')
 })
 
 app.listen(4000);

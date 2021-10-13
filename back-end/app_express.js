@@ -11,17 +11,21 @@ const app = express();
 
 const adminRoutes = require('./routes/admin.js');
 const shopRoutes = require('./routes/shop.js');
+const contactUsRoutes = require('./routes/contact-us.js')
 
 app.use(bodyParser.urlencoded({
     extended: false
 }));
+
+//use files statically
+app.use(express.static(path.join(__dirname, 'public')));
 
 //filter all '/admin' request to adminRoutes
 app.use('/admin', adminRoutes);
 //filter all '/shop' request to adminRoutes
 app.use('/shop', shopRoutes);
 
-
+app.use(contactUsRoutes);
 
 app.use((req,res,next)=>{
     res.status(404).sendFile(path.join(__dirname, 'views', '404.html'))

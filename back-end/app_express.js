@@ -8,10 +8,13 @@ const express = require('express');
 
 const app = express();
 
-
+//adding routes files
 const adminRoutes = require('./routes/admin.js');
 const shopRoutes = require('./routes/shop.js');
 const contactUsRoutes = require('./routes/contact-us.js')
+
+//adding controler file
+const errorPage = require('./controler/404.js')
 
 app.use(bodyParser.urlencoded({
     extended: false
@@ -27,8 +30,6 @@ app.use('/shop', shopRoutes);
 
 app.use(contactUsRoutes);
 
-app.use((req,res,next)=>{
-    res.status(404).sendFile(path.join(__dirname, 'views', '404.html'))
-})
+app.use(errorPage.getError)
 
 app.listen(4000);

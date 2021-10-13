@@ -1,12 +1,11 @@
-const path = require('path');
-
 const express = require('express');
 
 const routes = express.Router();
 
+//add controler file
+const shopControler = require('../controler/shop.js')
+
 //checks for /shop/ =>get 
-routes.get('/', (req,res,next)=>{
-    res.sendFile(path.join(__dirname, '../', 'views', 'shop.html'));
-})
+routes.get('/', shopControler.getShop)
 
 module.exports = routes;

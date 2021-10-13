@@ -1,17 +1,13 @@
-const path = require('path');
-
 const express = require('express');
 
 const routes = express.Router();
 
+//adding controler file
+const addProductControler = require('../controler/add-product.js')
+
 //checks for /admin/add-product => GET
-routes.get('/add-product', (req,res,next)=>{
-    res.sendFile(path.join(__dirname, '..', 'views', 'add-product.html'))
-})
+routes.get('/add-product', addProductControler.getAddProduct)
 //checks for /admin/add-product => POST
-routes.post('/add-product', (req,res,next)=>{
-    console.log(req.data);
-    res.redirect('/shop');  //redirect to /shop
-})
+routes.post('/add-product', addProductControler.postAddProducts)
 
 module.exports = routes;
